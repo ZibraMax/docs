@@ -1,0 +1,48 @@
+html,
+body {
+	margin: 0px;
+	height: 100%;
+
+	font-family: var(--font-family);
+	background-color: var(--backbround-color);
+	color: var(--gui-text-color);
+}
+.box {
+	height: 100%;
+	width: 100%;
+	overflow: hidden;
+	border-radius: 8px;
+}
+.halfs {
+	float: left;
+	width: 48%;
+}
+
+table {
+	border-top: 2px solid lightgray;
+	border-bottom: 2px solid lightgray;
+}
+
+.container {
+	height: 400px;
+	padding: 20px;
+}
+
+:root {
+	--gui-background-color: #f6f6f6;
+	--gui-text-color: #000000;
+	--gui-title-background-color: #efefef;
+	--gui-title-text-color: #3d3d3d;
+	--gui-widget-color: #eaeaea;
+	--gui-hover-color: #f0f0f0;
+	--gui-focus-color: #fafafa;
+	--gui-number-color: #07aacf;
+	--gui-string-color: #8da300;
+
+	--backbround-color: var(--gui-background-color);
+	--over-backbround-color: var(--gui-background-color);
+	--focus-color: #2c3cb4;
+	--lines-color: var(--gui-text-color);
+	--font-family: "Roboto", sans-serif;
+	--plot-grid-color: var(--gui-title-background-color);
+}

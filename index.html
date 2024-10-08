@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="./styles.css" />
+		<title>Results viewer</title>
+		<script type="importmap">
+			{
+				"imports": {
+					"three": "https://cdn.jsdelivr.net/npm/three@v0.168.0/build/three.module.js",
+					"three/addons/": "https://cdn.jsdelivr.net/npm/three@v0.168.0/examples/jsm/"
+				}
+			}
+		</script>
+
+		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/picnic" />
+		<script
+			id="MathJax-script"
+			async
+			src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"
+		></script>
+		<script
+			src="https://cdn.plot.ly/plotly-2.35.2.min.js"
+			charset="utf-8"
+		></script>
+	</head>
+	<body>
+		<div id="container" class="container halfs"></div>
+		<div id="parameters" class="container halfs">
+			<table style="width: 100%">
+				<tbody>
+					<tr>
+						<td>
+							<span class="stack">$$a=$$</span>
+						</td>
+						<td>
+							<input
+								type="text"
+								id="a"
+								value="24.5"
+								class="stack"
+							/>
+						</td>
+						<td>
+							<span class="stack">$$b=$$</span>
+						</td>
+						<td>
+							<input
+								type="text"
+								id="b"
+								value="24.5"
+								class="stack"
+							/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="stack">$$\gamma_1=$$</span>
+						</td>
+						<td>
+							<input
+								type="text"
+								id="g1"
+								value="45"
+								class="stack"
+							/>
+						</td>
+						<td>
+							<span class="stack">$$\gamma_2=$$</span>
+						</td>
+						<td>
+							<input
+								type="text"
+								id="g2"
+								value="85"
+								class="stack"
+							/>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<span class="stack">$$\beta=$$</span>
+						</td>
+						<td>
+							<input
+								type="text"
+								id="beta"
+								value="120"
+								class="stack"
+							/>
+						</td>
+						<td>
+							<button
+								class="tooltip-top stack icon-paper-plane"
+								style="text-align: center"
+								id="Animation"
+							>
+								Animation
+							</button>
+						</td>
+						<td>
+							<div class="slidecontainer">
+								<input
+									type="range"
+									min="0"
+									max="180"
+									value="120"
+									class="slider"
+									id="range_beta"
+								/>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<span class="stack">$$\nu=$$</span>
+						</td>
+						<td>
+							<select id="poisson_select">
+								<option value="0">$$\nu$$_hl</option>
+								<option value="1">$$\nu$$_wl</option>
+								<option value="2">$$\nu$$_hw</option>
+							</select>
+						</td>
+						<td>
+							<span class="stack">$$k=$$</span>
+						</td>
+						<td>
+							<select id="k_select">
+								<option value="0">K_x</option>
+								<option value="1">K_y</option>
+							</select>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="container halfs"><div id="grafica1"></div></div>
+		<div class="container halfs"><div id="grafica2"></div></div>
+		<script type="module" src="./main.js"></script>
+	</body>
+</html>
