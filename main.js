@@ -118,8 +118,8 @@ class Viewer {
 		this.camera.add(this.light);
 		this.scene.add(this.light2);
 
-		this.gh = new AxisGridHelper(this.scene, 1);
-		this.gh.visible = false;
+		this.gh = new AxisGridHelper(this.scene, 0);
+		this.gh.visible = true;
 	}
 	async createPatter() {
 		this.parseJSON();
