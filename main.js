@@ -520,10 +520,10 @@ class Viewer {
 	updatePlot1() {
 		let ax = 0;
 		let ay = 0;
-		let bx = 2 * Math.PI;
-		let by = 2 * Math.PI;
+		let bx = 90;
+		let by = 90;
 		let selected = globalargs["poisson"];
-		let n = 30;
+		let n = 80;
 		let x = new Array(n);
 		let y = new Array(n);
 		let z = new Array(n);
@@ -582,10 +582,10 @@ class Viewer {
 	updatePlot2() {
 		let ax = 0;
 		let ay = 0;
-		let bx = 2 * Math.PI;
-		let by = 2 * Math.PI;
+		let bx = 90;
+		let by = 90;
 		let selected = globalargs["k"];
-		let n = 30;
+		let n = 80;
 		let x = new Array(n);
 		let y = new Array(n);
 		let z = new Array(n);
@@ -640,25 +640,44 @@ class Viewer {
 	}
 	updatePlot3() {
 		let ax = 0;
-		let bx = 2 * Math.PI;
-		let selected = globalargs["poisson"];
+		let bx = 90;
 		let n = 150;
 		let x = new Array(n);
-		let y = new Array(n);
+		let y1 = new Array(n);
+		let y2 = new Array(n);
+		let y3 = new Array(n);
 
 		let hx = (bx - ax) / n;
+		console.log(globalargs);
 
 		for (let i = 0; i < n; i++) {
 			x[i] = ax + hx * i;
 			let args = { ...globalargs, beta: x[i] };
-			let value = selected(args);
-			y[i] = value;
+			let value1 = mars.poissonhl(args);
+			let value2 = mars.poissonwl(args);
+			let value3 = mars.poissonhw(args);
+			y1[i] = value1;
+			y2[i] = value2;
+			y3[i] = value3;
 		}
 		var data = [
 			{
 				x: x,
-				y: y,
+				y: y1,
 				type: "line",
+				name: "vhl",
+			},
+			{
+				x: x,
+				y: y2,
+				type: "line",
+				name: "vwl",
+			},
+			{
+				x: x,
+				y: y3,
+				type: "line",
+				name: "vhw",
 			},
 		];
 
@@ -674,6 +693,7 @@ class Viewer {
 				title: "v",
 				tickformat: ".3f",
 				gridcolor: "rgb(198,194,191)",
+				range: [-5, 5],
 			},
 			margin: {
 				l: 70, // left margin
@@ -687,25 +707,34 @@ class Viewer {
 	}
 	updatePlot4() {
 		let ax = 0;
-		let bx = 2 * Math.PI;
-		let selected = globalargs["k"];
+		let bx = 90;
 		let n = 150;
 		let x = new Array(n);
-		let y = new Array(n);
+		let y1 = new Array(n);
+		let y2 = new Array(n);
 
 		let hx = (bx - ax) / n;
 
 		for (let i = 0; i < n; i++) {
 			x[i] = ax + hx * i;
 			let args = { ...globalargs, beta: x[i] };
-			let value = selected(args);
-			y[i] = Math.log10(value);
+			let value1 = mars.stiffnessx(args);
+			let value2 = mars.stiffnessky(args);
+			y1[i] = Math.log10(value1);
+			y2[i] = Math.log10(value2);
 		}
 		var data = [
 			{
 				x: x,
-				y: y,
+				y: y1,
 				type: "line",
+				name: "Kx",
+			},
+			{
+				x: x,
+				y: y2,
+				type: "line",
+				name: "Ky",
 			},
 		];
 
