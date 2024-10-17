@@ -7,7 +7,7 @@ const abs = Math.abs;
 class mars {
 	constructor() {}
 
-	static coordinates(args) {
+	static geometry(args) {
 		let a = args["a"];
 		let b = args["b"];
 		let beta = (args["beta"] * Math.PI) / 180;
@@ -72,6 +72,11 @@ class mars {
 			);
 		W = 2 * W;
 		L = 2 * L;
+		return [S, W, H, L, V];
+	}
+
+	static coordinates(args) {
+		let [S, W, H, L, V] = this.geometry(args);
 		let O0 = [0, 0, 0];
 		let O1 = [0, 0, 0];
 		let O2 = [0, 0, 0];

@@ -23,6 +23,8 @@ function allowUpdate() {
 import { mars } from "./mars.js";
 const grafica1 = document.getElementById("grafica1");
 const grafica2 = document.getElementById("grafica2");
+const grafica3 = document.getElementById("grafica3");
+const grafica4 = document.getElementById("grafica4");
 
 const globalargs = {
 	gamma1: 60,
@@ -76,7 +78,7 @@ class Viewer {
 
 		this.renderer.autoClear = false;
 		this.delta = 0;
-		this.interval = 1 / 60;
+		this.interval = 1 / (60 * 4);
 		this.clock = new THREE.Clock();
 		this.bufferGeometries = [];
 		this.bufferLines = [];
@@ -132,7 +134,7 @@ class Viewer {
 		}
 	}
 	update() {
-		this.delta += this.clock.getDelta();
+		this.delta += this.clock.getDelta() / 4;
 		if (this.delta > this.interval) {
 			// The draw or time dependent code are here
 			this.render(this.delta);
@@ -636,10 +638,127 @@ class Viewer {
 		};
 		Plotly.newPlot(grafica2, data, layout, { responsive: true });
 	}
+	updatePlot3() {
+		let ax = 0;
+		let bx = 2 * Math.PI;
+		let selected = globalargs["poisson"];
+		let n = 150;
+		let x = new Array(n);
+		let y = new Array(n);
+
+		let hx = (bx - ax) / n;
+
+		for (let i = 0; i < n; i++) {
+			x[i] = ax + hx * i;
+			let args = { ...globalargs, beta: x[i] };
+			let value = selected(args);
+			y[i] = value;
+		}
+		var data = [
+			{
+				x: x,
+				y: y,
+				type: "line",
+			},
+		];
+
+		let layout = {
+			plot_bgcolor: "rgba(0,0,0,0)",
+			paper_bgcolor: "rgba(0,0,0,0)",
+			xaxis: {
+				title: "β",
+				tickformat: ".3f",
+				gridcolor: "rgb(198,194,191)",
+			},
+			yaxis: {
+				title: "v",
+				tickformat: ".3f",
+				gridcolor: "rgb(198,194,191)",
+			},
+			margin: {
+				l: 70, // left margin
+				r: 30, // right margin
+				b: 50, // bottom margin
+				t: 70, // top margin
+				pad: 4, // padding between the plotting area and the margins
+			},
+		};
+		Plotly.newPlot(grafica3, data, layout, { responsive: true });
+	}
+	updatePlot4() {
+		let ax = 0;
+		let bx = 2 * Math.PI;
+		let selected = globalargs["k"];
+		let n = 150;
+		let x = new Array(n);
+		let y = new Array(n);
+
+		let hx = (bx - ax) / n;
+
+		for (let i = 0; i < n; i++) {
+			x[i] = ax + hx * i;
+			let args = { ...globalargs, beta: x[i] };
+			let value = selected(args);
+			y[i] = Math.log10(value);
+		}
+		var data = [
+			{
+				x: x,
+				y: y,
+				type: "line",
+			},
+		];
+
+		let layout = {
+			plot_bgcolor: "rgba(0,0,0,0)",
+			paper_bgcolor: "rgba(0,0,0,0)",
+			xaxis: {
+				title: "β",
+				tickformat: ".3f",
+				gridcolor: "rgb(198,194,191)",
+			},
+			yaxis: {
+				title: "Log10(K)",
+				tickformat: ".3f",
+				gridcolor: "rgb(198,194,191)",
+			},
+			margin: {
+				l: 70, // left margin
+				r: 30, // right margin
+				b: 50, // bottom margin
+				t: 70, // top margin
+				pad: 4, // padding between the plotting area and the margins
+			},
+		};
+		Plotly.newPlot(grafica4, data, layout, { responsive: true });
+	}
 
 	updatePlots() {
 		this.updatePlot1();
 		this.updatePlot2();
+		this.updatePlot3();
+		this.updatePlot4();
+
+		let hl = mars.poissonhl(globalargs);
+		let hw = mars.poissonhw(globalargs);
+		let wl = mars.poissonwl(globalargs);
+		let kx = mars.stiffnessx(globalargs);
+		let ky = mars.stiffnessky(globalargs);
+		let [S, W, H, L, V] = mars.geometry(globalargs);
+
+		let poasos = `$$\\nu_{hl}=${hl.toFixed(2)}$$\n$$\\nu_{hw}=${hw.toFixed(
+			2
+		)}$$\n$$\\nu_{wl}=${wl.toFixed(2)}$$`;
+
+		let stf = `$$K_{x}=${kx.toFixed(2)}$$\n$$K_{y}=${ky.toFixed(2)}$$`;
+		let geom = `$$S=${S.toFixed(2)},2W=${W.toFixed(2)}$$ $$2L=${L.toFixed(
+			2
+		)}, H=${H.toFixed(2)}$$ $$V=${V.toFixed(2)}$$`;
+
+		poissons_info.innerHTML = poasos;
+		geometry_info.innerHTML = geom;
+		stiffness_info.innerHTML = stf;
+		MathJax.typeset();
 	}
 }
 const aelement = document.getElementById("a");
@@ -650,6 +769,11 @@ const betaelement = document.getElementById("beta");
 const poissonelement = document.getElementById("poisson_select");
 const rangebeta = document.getElementById("range_beta");
 const kelement = document.getElementById("k_select");
+
+const poissons_info = document.getElementById("poissons");
+const geometry_info = document.getElementById("geometries");
+const stiffness_info = document.getElementById("stiffness");
+
 const container = document.getElementById("container");
 
 const O = new Viewer(container, true);
